@@ -2,7 +2,6 @@
 
 [![Tests](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml/badge.svg)](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/philiprehberger/php-enum-utils.svg)](https://packagist.org/packages/philiprehberger/php-enum-utils)
-[![Total Downloads](https://img.shields.io/packagist/dt/philiprehberger/php-enum-utils.svg)](https://packagist.org/packages/philiprehberger/php-enum-utils)
 [![PHP Version Require](https://img.shields.io/packagist/php-v/philiprehberger/php-enum-utils.svg)](https://packagist.org/packages/philiprehberger/php-enum-utils)
 [![License](https://img.shields.io/github/license/philiprehberger/php-enum-utils)](LICENSE)
 
