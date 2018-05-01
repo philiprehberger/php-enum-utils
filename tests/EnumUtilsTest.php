@@ -110,6 +110,84 @@ final class EnumUtilsTest extends TestCase
         $this->assertSame('Cancelled', EnumMeta::label(StringStatus::Cancelled));
     }
 
+    public function test_cases_where_filters_by_name_pattern(): void
+    {
+        $result = StringStatus::casesWhere(
+            static fn (StringStatus $case): bool => str_starts_with($case->name, 'C'),
+        );
+
+        $this->assertSame([StringStatus::Completed, StringStatus::Cancelled], $result);
+    }
+
+    public function test_cases_where_filters_by_value(): void
+    {
+        $result = IntPriority::casesWhere(
+            static fn (IntPriority $case): bool => $case->value >= 3,
+        );
+
+        $this->assertSame([IntPriority::High, IntPriority::Critical], $result);
+    }
+
+    public function test_cases_where_returns_empty_when_no_match(): void
+    {
+        $result = StringStatus::casesWhere(
+            static fn (StringStatus $case): bool => false,
+        );
+
+        $this->assertSame([], $result);
+    }
+
+    public function test_in_returns_true_when_case_is_in_set(): void
+    {
+        $this->assertTrue(
+            StringStatus::Pending->in(StringStatus::Pending, StringStatus::Completed),
+        );
+    }
+
+    public function test_in_returns_false_when_case_is_not_in_set(): void
+    {
+        $this->assertFalse(
+            StringStatus::Cancelled->in(StringStatus::Pending, StringStatus::Completed),
+        );
+    }
+
+    public function test_in_with_single_matching_case(): void
+    {
+        $this->assertTrue(IntPriority::High->in(IntPriority::High));
+    }
+
+    public function test_in_with_no_arguments_returns_false(): void
+    {
+        $this->assertFalse(StringStatus::Pending->in());
+    }
+
+    public function test_to_select_array_with_int_backed_enum(): void
+    {
+        $expected = [
+            1 => 'Low Priority',
+            2 => 'Medium Priority',
+            3 => 'High Priority',
+            4 => 'Critical',
+        ];
+
+        $this->assertSame($expected, IntPriority::toSelectArray());
+    }
+
+    public function test_to_select_array_uses_label_attribute(): void
+    {
+        $result = StringStatus::toSelectArray();
+
+        $this->assertSame('Pending Review', $result['pending']);
+        $this->assertSame('In Progress', $result['in_progress']);
+    }
+
+    public function test_to_select_array_falls_back_to_humanized_name(): void
+    {
+        $result = StringStatus::toSelectArray();
+
+        $this->assertSame('Cancelled', $result['cancelled']);
+    }
+
     public function test_works_with_int_backed_enums(): void
     {
         $this->assertSame(IntPriority::High, IntPriority::fromName('High'));

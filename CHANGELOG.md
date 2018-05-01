@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-03-22
+
+### Added
+- `casesWhere()` method for filtering enum cases by custom predicate
+- `in()` method to check if a case is among a given set
+- `toSelectArray()` method returning value-to-label mappings for dropdown rendering
+
 ## [1.0.3] - 2026-03-17
 
 ### Changed
