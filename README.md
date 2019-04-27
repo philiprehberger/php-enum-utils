@@ -6,7 +6,6 @@
 
 Utility trait and helpers for PHP 8.1+ native enums.
 
----
 
 ## Requirements
 
@@ -14,7 +13,6 @@ Utility trait and helpers for PHP 8.1+ native enums.
 |------------|---------|
 | PHP        | ^8.2    |
 
----
 
 ## Installation
 
@@ -22,7 +20,6 @@ Utility trait and helpers for PHP 8.1+ native enums.
 composer require philiprehberger/php-enum-utils
 ```
 
----
 
 ## Usage
 
@@ -105,7 +102,6 @@ EnumMeta::description(Status::Completed); // null
 EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...]
 ```
 
----
 
 ## API
 
@@ -140,7 +136,6 @@ EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...
 | `#[Label('...')]` | Enum case | Human-readable label |
 | `#[Description('...')]` | Enum case | Longer description text |
 
----
 
 ## Development
 
