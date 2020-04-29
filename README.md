@@ -9,9 +9,7 @@ Utility trait and helpers for PHP 8.1+ native enums.
 
 ## Requirements
 
-| Dependency | Version |
-|------------|---------|
-| PHP        | ^8.2    |
+- PHP 8.2+
 
 
 ## Installation
