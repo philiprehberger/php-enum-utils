@@ -3,6 +3,7 @@
 [![Tests](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml/badge.svg)](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/philiprehberger/php-enum-utils.svg)](https://packagist.org/packages/philiprehberger/php-enum-utils)
 [![License](https://img.shields.io/github/license/philiprehberger/php-enum-utils)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
 
 Utility trait and helpers for PHP 8.1+ native enums.
 
