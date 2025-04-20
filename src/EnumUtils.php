@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PhilipRehberger\EnumUtils;
 
+use PhilipRehberger\EnumUtils\Attributes\AllowedTransitions;
+use ReflectionEnumUnitCase;
+
 /**
  * Utility trait for backed enums providing common lookup, listing, and comparison helpers.
  *
@@ -160,5 +163,129 @@ trait EnumUtils
     public function equals(self $other): bool
     {
         return $this === $other;
+    }
+
+    /**
+     * Wrap all enum cases in a fluent EnumCollection.
+     *
+     * @return EnumCollection<static>
+     */
+    public static function collect(): EnumCollection
+    {
+        return new EnumCollection(static::cases());
+    }
+
+    /**
+     * Serialize all cases to a JSON array of objects.
+     *
+     * Each object contains: name, value, and optionally label and description.
+     */
+    public static function toJson(): string
+    {
+        $items = [];
+
+        foreach (static::cases() as $case) {
+            $item = [
+                'name' => $case->name,
+                'value' => $case->value,
+            ];
+
+            $label = EnumMeta::label($case);
+            if ($label !== $case->name) {
+                $item['label'] = $label;
+            }
+
+            $description = EnumMeta::description($case);
+            if ($description !== null) {
+                $item['description'] = $description;
+            }
+
+            $items[] = $item;
+        }
+
+        return (string) json_encode($items, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Deserialize a JSON string back to an array of enum cases.
+     *
+     * @return array<int, static>
+     *
+     * @throws \JsonException If the JSON is invalid.
+     * @throws \ValueError If a value does not match any case.
+     */
+    public static function fromJson(string $json): array
+    {
+        /** @var array<int, array{name: string, value: string|int}> $items */
+        $items = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+
+        $cases = [];
+
+        foreach ($items as $item) {
+            $cases[] = static::from($item['value']);
+        }
+
+        return $cases;
+    }
+
+    /**
+     * Get an associative array of value => label for all cases.
+     *
+     * Falls back to the case name if no Label attribute is present.
+     *
+     * @return array<string|int, string>
+     */
+    public static function toMap(): array
+    {
+        $result = [];
+
+        foreach (static::cases() as $case) {
+            $result[$case->value] = EnumMeta::label($case);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check whether this case can transition to the given target case.
+     *
+     * If no AllowedTransitions attribute is defined on this case, no transitions
+     * are considered valid and the method returns false.
+     */
+    public function canTransitionTo(self $target): bool
+    {
+        $transitions = $this->allowedTransitions();
+
+        if ($transitions === []) {
+            return false;
+        }
+
+        foreach ($transitions as $allowed) {
+            if ($allowed === $target) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all allowed target states for this case.
+     *
+     * Returns an empty array if no AllowedTransitions attribute is defined.
+     *
+     * @return array<int, static>
+     */
+    public function allowedTransitions(): array
+    {
+        $reflection = new ReflectionEnumUnitCase(static::class, $this->name);
+        $attributes = $reflection->getAttributes(AllowedTransitions::class);
+
+        if ($attributes === []) {
+            return [];
+        }
+
+        /** @var array<int, static> */
+        return $attributes[0]->newInstance()->targets;
     }
 }
