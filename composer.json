@@ -1,7 +1,9 @@
 {
     "name": "philiprehberger/php-enum-utils",
     "description": "Utility trait and helpers for PHP 8.1+ native enums",
+    "type": "library",
     "keywords": ["enum", "utilities", "helpers", "attributes", "php-enum"],
+    "homepage": "https://github.com/philiprehberger/php-enum-utils",
     "license": "MIT",
     "authors": [
         {
@@ -29,6 +31,11 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "lint": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
