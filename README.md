@@ -73,6 +73,18 @@ Status::toArray();
 // ['Pending' => 'pending', 'InProgress' => 'in_progress', 'Completed' => 'completed']
 ```
 
+### Filtering cases
+
+```php
+// Filter by a custom predicate
+$active = Status::casesWhere(fn (Status $s) => $s !== Status::Completed);
+// [Status::Pending, Status::InProgress]
+
+// Check if a case is among a given set
+Status::Pending->in(Status::Pending, Status::InProgress);   // true
+Status::Completed->in(Status::Pending, Status::InProgress); // false
+```
+
 ### Random case and comparison
 
 ```php
@@ -106,10 +118,12 @@ EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...
 | `::names(): array` | All case names as a flat array |
 | `::values(): array` | All case values as a flat array |
 | `::random(): static` | A random case |
+| `::casesWhere(callable $filter): array` | Filter cases by a custom predicate |
 | `::toSelectArray(): array` | `[value => label]` for form selects |
 | `::toArray(): array` | `[name => value]` for serialization |
 | `::count(): int` | Total number of cases |
 | `->equals(self $other): bool` | Strict identity comparison |
+| `->in(self ...$cases): bool` | Check if case is among the given set |
 
 ### EnumMeta Helper
 

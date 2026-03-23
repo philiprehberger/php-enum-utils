@@ -82,6 +82,36 @@ trait EnumUtils
     }
 
     /**
+     * Filter enum cases using a custom predicate.
+     *
+     * The callable receives each case and should return true to include it.
+     *
+     * @param  callable(static): bool  $filter
+     * @return array<int, static>
+     */
+    public static function casesWhere(callable $filter): array
+    {
+        return array_values(array_filter(
+            static::cases(),
+            static fn (self $case): bool => $filter($case),
+        ));
+    }
+
+    /**
+     * Check whether this case is among the given set of cases.
+     */
+    public function in(self ...$cases): bool
+    {
+        foreach ($cases as $case) {
+            if ($this === $case) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Build an array suitable for HTML select elements: [value => label].
      *
      * Labels are resolved from the Label attribute if present, otherwise the
