@@ -2,23 +2,19 @@
 
 [![Tests](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml/badge.svg)](https://github.com/philiprehberger/php-enum-utils/actions/workflows/tests.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/philiprehberger/php-enum-utils.svg)](https://packagist.org/packages/philiprehberger/php-enum-utils)
-[![License](https://img.shields.io/github/license/philiprehberger/php-enum-utils)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/php-enum-utils)](https://github.com/philiprehberger/php-enum-utils/commits/main)
 
 Utility trait and helpers for PHP 8.1+ native enums.
-
 
 ## Requirements
 
 - PHP 8.2+
-
 
 ## Installation
 
 ```bash
 composer require philiprehberger/php-enum-utils
 ```
-
 
 ## Usage
 
@@ -101,7 +97,6 @@ EnumMeta::description(Status::Completed); // null
 EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...]
 ```
 
-
 ## API
 
 ### EnumUtils Trait
@@ -135,7 +130,6 @@ EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...
 | `#[Label('...')]` | Enum case | Human-readable label |
 | `#[Description('...')]` | Enum case | Longer description text |
 
-
 ## Development
 
 ```bash
@@ -145,6 +139,24 @@ vendor/bin/pint --test
 vendor/bin/phpstan analyse
 ```
 
+## Support
+
+If you find this project useful:
+
+⭐ [Star the repo](https://github.com/philiprehberger/php-enum-utils)
+
+🐛 [Report issues](https://github.com/philiprehberger/php-enum-utils/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+
+💡 [Suggest features](https://github.com/philiprehberger/php-enum-utils/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
+❤️ [Sponsor development](https://github.com/sponsors/philiprehberger)
+
+🌐 [All Open Source Projects](https://philiprehberger.com/open-source-packages)
+
+💻 [GitHub Profile](https://github.com/philiprehberger)
+
+🔗 [LinkedIn Profile](https://www.linkedin.com/in/philiprehberger)
+
 ## License
 
-MIT
+[MIT](LICENSE)
