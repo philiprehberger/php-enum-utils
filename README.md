@@ -85,6 +85,70 @@ Status::Pending->equals(Status::Pending);        // true
 Status::Pending->equals(Status::Completed);      // false
 ```
 
+### Collections
+
+```php
+use PhilipRehberger\EnumUtils\EnumCollection;
+
+// Wrap all cases in a fluent collection
+$active = Status::collect()
+    ->filter(fn (Status $s) => $s !== Status::Completed)
+    ->sortBy(fn (Status $s) => $s->value)
+    ->toArray();
+
+// Get the first matching case
+$first = Status::collect()->first(fn (Status $s) => str_starts_with($s->value, 'p'));
+
+// Group cases
+$grouped = Status::collect()->groupBy(fn (Status $s) => $s === Status::Completed ? 'done' : 'active');
+
+// Partition into two arrays: [matching, non-matching]
+[$pending, $rest] = Status::collect()->partition(fn (Status $s) => $s === Status::Pending);
+```
+
+### Serialization
+
+```php
+// Serialize all cases to JSON
+$json = Status::toJson();
+// [{"name":"Pending","value":"pending","label":"Pending Review","description":"..."},...]
+
+// Deserialize back to enum cases
+$cases = Status::fromJson($json);  // [Status::Pending, Status::InProgress, ...]
+
+// Get value => label map
+$map = Status::toMap();
+// ['pending' => 'Pending Review', 'in_progress' => 'In Progress', 'completed' => 'Completed']
+```
+
+### State Transitions
+
+```php
+use PhilipRehberger\EnumUtils\Attributes\AllowedTransitions;
+
+enum OrderStatus: string
+{
+    use EnumUtils;
+
+    #[AllowedTransitions(self::Processing, self::Cancelled)]
+    case Pending = 'pending';
+
+    #[AllowedTransitions(self::Shipped, self::Cancelled)]
+    case Processing = 'processing';
+
+    #[AllowedTransitions(self::Delivered)]
+    case Shipped = 'shipped';
+
+    case Delivered = 'delivered';
+    case Cancelled = 'cancelled';
+}
+
+OrderStatus::Pending->canTransitionTo(OrderStatus::Processing);  // true
+OrderStatus::Pending->canTransitionTo(OrderStatus::Shipped);     // false
+OrderStatus::Pending->allowedTransitions();  // [OrderStatus::Processing, OrderStatus::Cancelled]
+OrderStatus::Delivered->allowedTransitions(); // [] (no transitions defined)
+```
+
 ### Reading attributes with EnumMeta
 
 ```php
@@ -114,6 +178,12 @@ EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...
 | `::count(): int` | Total number of cases |
 | `->equals(self $other): bool` | Strict identity comparison |
 | `->in(self ...$cases): bool` | Check if case is among the given set |
+| `::collect(): EnumCollection` | Wrap all cases in a fluent collection |
+| `::toJson(): string` | Serialize all cases to JSON |
+| `::fromJson(string $json): array` | Deserialize JSON back to enum cases |
+| `::toMap(): array` | `[value => label]` map for all cases |
+| `->canTransitionTo(self $target): bool` | Check if transition is allowed |
+| `->allowedTransitions(): array` | Get all allowed target states |
 
 ### EnumMeta Helper
 
@@ -129,6 +199,7 @@ EnumMeta::labels(Status::class);          // ['pending' => 'Pending Review', ...
 |-----------|--------|---------|
 | `#[Label('...')]` | Enum case | Human-readable label |
 | `#[Description('...')]` | Enum case | Longer description text |
+| `#[AllowedTransitions(...)]` | Enum case | Define valid state transitions |
 
 ## Development
 

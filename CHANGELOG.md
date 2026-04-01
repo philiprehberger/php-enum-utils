@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-03-31
+
+### Added
+- Fluent `EnumCollection` with filter, map, sortBy, groupBy, partition, and more via `collect()`
+- Serialization methods: `toJson()`, `fromJson()`, `toMap()`
+- Transition validation via `#[AllowedTransitions]` attribute with `canTransitionTo()` and `allowedTransitions()`
+
 ## [1.1.3] - 2026-03-31
 
 ### Changed
